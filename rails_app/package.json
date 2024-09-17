@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "daisyui": "^4.12.10",
+    "postcss": "^8.4.45"
+  },
+  "dependencies": {}
+}

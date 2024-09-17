@@ -1,0 +1,117 @@
+service: receivers
+frameworkVersion: '3'
+useDotenv: true
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'test-decoupled'}
+  region: ${env:AWS_REGION}
+  profile: ${env:AWS_PROFILE}
+  runtime: python3.10
+  timeout: 240
+  architecture: arm64
+  stackTags:
+    product: receiver-functions
+    customer-impact: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:*
+          Resource:
+            - arn:aws:s3:::${env:APP_NAME_PRIVATE}-${opt:stage, 'test-decoupled'}
+            - arn:aws:s3:::${env:APP_NAME_PRIVATE}-${opt:stage, 'test-decoupled'}/*
+            - arn:aws:s3:::${env:APP_NAME_PRIVATE}-trigger-${opt:stage, 'test-decoupled'}
+            - arn:aws:s3:::${env:APP_NAME_PRIVATE}-trigger-${opt:stage, 'test-decoupled'}/*
+        - Effect: Allow
+          Action:
+            - sqs:*
+          Resource:
+            - arn:aws:sqs:${env:AWS_REGION}:${env:ACCOUNT_ID}:${env:APP_NAME_PRIVATE}-receiver_preprocess-${opt:stage, 'test-decoupled'}
+            - arn:aws:sqs:${env:AWS_REGION}:${env:ACCOUNT_ID}:${env:APP_NAME_PRIVATE}-receiver_process-${opt:stage, 'test-decoupled'}
+            - arn:aws:sqs:${env:AWS_REGION}:${env:ACCOUNT_ID}:${env:APP_NAME_PRIVATE}-receiver_end-${opt:stage, 'test-decoupled'}
+            - arn:aws:sqs:${env:AWS_REGION}:${env:ACCOUNT_ID}:${env:APP_NAME_PRIVATE}-receiver_status-${opt:stage, 'test-decoupled'}
+  deploymentBucket:
+    name: ${env:APP_NAME_PRIVATE}-serverless-artifacts
+  environment:
+    APP_NAME_PRIVATE: ${env:APP_NAME_PRIVATE}
+    STAGE: ${opt:stage, 'test-decoupled'}
+
+custom:
+  railsHosts:
+    test-decoupled: ${env:RAILS_HOST_TEST_DECOUPLED}
+    production: ${env:RAILS_HOST_PRODUCTION}
+    development: ${env:RAILS_HOST_DEVELOPMENT}
+    test: ${env:RAILS_HOST_TEST}
+  lambdaApiKeys:
+    test-decoupled: ${env:LAMBDA_API_KEY_TEST_DECOUPLED}
+    production: ${env:LAMBDA_API_KEY_PRODUCTION}
+    development: ${env:LAMBDA_API_KEY_DEVELOPMENT}
+    test: ${env:LAMBDA_API_KEY_TEST}
+  shouldBindStatusQueue:
+    test-decoupled: false
+    production: true
+    development: true
+    test: true
+
+
+functions:
+  receiver_start:
+    name: ${env:APP_NAME_PRIVATE}-receiver_start-${opt:stage, 'test-decoupled'}
+    image: ${env:ACCOUNT_ID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:APP_NAME_PRIVATE}-receiver_start:${opt:stage, 'test-decoupled'}
+    description: 'start rails receiver lambda function'
+    environment:
+      RECEIVER_NAME: receiver_start
+
+  receiver_preprocess:
+    name: ${env:APP_NAME_PRIVATE}-receiver_preprocess-${opt:stage, 'test-decoupled'}
+    image: ${env:ACCOUNT_ID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:APP_NAME_PRIVATE}-receiver_preprocess:${opt:stage, 'test-decoupled'}
+    description: 'receiver preprocess lambda function'
+    events:
+      - sqs:
+          enabled: ${self:custom.shouldBindStatusQueue.${opt:stage, 'test-decoupled'}}
+          arn: ${env:SQS_ARN_ROOT}${env:APP_NAME_PRIVATE}-receiver_preprocess-${opt:stage, 'test-decoupled'}
+          batchSize: 1
+    environment:
+      RECEIVER_NAME: receiver_preprocess
+
+  receiver_process:
+    name: ${env:APP_NAME_PRIVATE}-receiver_process-${opt:stage, 'test-decoupled'}
+    image: ${env:ACCOUNT_ID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:APP_NAME_PRIVATE}-receiver_process:${opt:stage, 'test-decoupled'}
+    description: 'receiver process lambda function'
+    events:
+      - sqs:
+          enabled: ${self:custom.shouldBindStatusQueue.${opt:stage, 'test-decoupled'}}
+          arn: ${env:SQS_ARN_ROOT}${env:APP_NAME_PRIVATE}-receiver_process-${opt:stage, 'test-decoupled'}
+          batchSize: 1
+    environment:
+      RECEIVER_NAME: receiver_process
+
+  receiver_end:
+    name: ${env:APP_NAME_PRIVATE}-receiver_end-${opt:stage, 'test-decoupled'}
+    image: ${env:ACCOUNT_ID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:APP_NAME_PRIVATE}-receiver_end:${opt:stage, 'test-decoupled'}
+    description: 'receiver end lambda function'
+    events:
+      - sqs:
+          enabled: ${self:custom.shouldBindStatusQueue.${opt:stage, 'test-decoupled'}}
+          arn: ${env:SQS_ARN_ROOT}${env:APP_NAME_PRIVATE}-receiver_end-${opt:stage, 'test-decoupled'}
+          batchSize: 1
+    environment:
+      RECEIVER_NAME: receiver_end
+      RAILS_HOST: ${self:custom.railsHosts.${opt:stage, 'test-decoupled'}}
+      LAMBDA_API_KEY: ${self:custom.lambdaApiKeys.${opt:stage, 'test-decoupled'}}
+
+  receiver_status:
+    name: ${env:APP_NAME_PRIVATE}-receiver_status-${opt:stage, 'test-decoupled'}
+    image: ${env:ACCOUNT_ID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:APP_NAME_PRIVATE}-receiver_status:${opt:stage, 'test-decoupled'}
+    description: 'receiver status lambda function'
+    events:
+      - sqs:
+          enabled: ${self:custom.shouldBindStatusQueue.${opt:stage, 'test-decoupled'}}
+          arn: ${env:SQS_ARN_ROOT}${env:APP_NAME_PRIVATE}-receiver_status-${opt:stage, 'test-decoupled'}
+          batchSize: 1
+    environment:
+      RECEIVER_NAME: receiver_status
+      RAILS_HOST: ${self:custom.railsHosts.${opt:stage, 'test-decoupled'}}
+      LAMBDA_API_KEY: ${self:custom.lambdaApiKeys.${opt:stage, 'test-decoupled'}}

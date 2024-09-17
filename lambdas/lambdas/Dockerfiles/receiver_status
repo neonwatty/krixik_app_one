@@ -1,0 +1,28 @@
+# FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12-arm64
+
+# Set up environment variables and paths
+ENV PYTHONPATH=.
+
+# make new directory for app home
+ENV APP_HOME=${LAMBDA_TASK_ROOT}/app
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+
+# copy and install requirements
+COPY --from=app_root lambdas/requirements/receiver_status.txt .
+RUN pip install -r receiver_status.txt
+
+# copy files
+COPY --from=app_root receivers/__init__.py ./receivers/__init__.py
+COPY --from=app_root receivers/utilities ./receivers/utilities
+COPY --from=app_root receivers/receiver_status ./receivers/receiver_status
+COPY --from=app_root decorators ./decorators
+COPY --from=app_root sqs/messages ./sqs/messages
+COPY --from=app_root s3 ./s3
+COPY --from=app_root tables/public ./tables/public
+COPY --from=app_root utilities/tools ./utilities/tools
+
+
+# Set cmd
+CMD [ "receivers/receiver_status/receiver_status.lambda_handler" ]

@@ -1,0 +1,32 @@
+# dev data
+**/dev_data
+lambdas/lambdas/utilities/
+**/ffmpeg-7.0.1-arm64-static
+**/ffmpeg-release-arm64-static.tar.xz
+
+# mac specific ignores
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
+# npm
+**/node_modules/
+
+# root env and venv for lambdas
+**/.env
+.venv
+venv/
+venv.bak/
+
+# npm
+**/node_modules/
+
+# linting and serverless
+**/.serverless/
+**/.ruff_cache
+
+
+
+
+

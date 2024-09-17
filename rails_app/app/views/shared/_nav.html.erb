@@ -1,0 +1,34 @@
+<div class="navbar bg-base-100" id="navbar">
+  <%= link_to 'railsTemplate', root_path, class: 'btn btn-ghost text-xl' %>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
+      <li>
+        <%= link_to 'Home', root_path, class: "link link-hover"%>
+      </li>
+      <li>
+        <%= link_to 'Search', search_path, class: "link link-hover"%>
+      </li>
+      <li>
+        <%= link_to 'All uploads', uploads_path, class: "link link-hover"%>
+      </li>
+      <li>
+        <%= link_to 'New Upload', new_upload_path, class: "link link-hover"%>
+      </li>
+      <% if user_signed_in? %>
+        <li>
+          <%= link_to "Profile", edit_user_registration_path %>
+        </li>
+        <li>
+          <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+        </li>
+      <% else %>
+        <li>
+          <%= link_to "Log in", new_user_session_path %>
+        </li>
+        <li>
+          <%= link_to "Sign up", new_user_registration_path %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

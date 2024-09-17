@@ -1,0 +1,31 @@
+FROM public.ecr.aws/lambda/python:3.12-arm64
+
+# Set up environment variables and paths
+ENV PATH="/usr/local/bin/ffmpeg:$PATH" PYTHONPATH=.
+
+# Copy and configure ffmpeg
+COPY --from=app_root lambdas/utilities/ffmpeg-7.0.1-arm64-static /usr/local/bin/ffmpeg
+RUN chmod -R 777 /usr/local/bin/ffmpeg && ffmpeg -version
+
+# make new directory for app home
+ENV APP_HOME=${LAMBDA_TASK_ROOT}/app
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+
+# copy and install requirements
+COPY --from=app_root lambdas/requirements/receiver_preprocess.txt .
+RUN pip install -r receiver_preprocess.txt
+
+# copy files
+COPY --from=app_root receivers/__init__.py ./receivers/__init__.py
+COPY --from=app_root receivers/utilities ./receivers/utilities
+COPY --from=app_root receivers/receiver_preprocess ./receivers/receiver_preprocess
+COPY --from=app_root decorators ./decorators
+COPY --from=app_root sqs/messages ./sqs/messages
+COPY --from=app_root s3 ./s3
+COPY --from=app_root tables/public ./tables/public
+COPY --from=app_root utilities/tools ./utilities/tools
+
+
+# Set cmd
+CMD [ "receivers/receiver_preprocess/receiver_preprocess.lambda_handler" ]

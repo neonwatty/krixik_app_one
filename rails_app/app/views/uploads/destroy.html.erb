@@ -1,0 +1,11 @@
+<h1>Show page for Upload</h1>
+<% if @upload.files.attached? %>
+  <% @upload.files.each do |file| %>
+    <%= image_tag file, alt: 'Uploaded Image', style: 'max-width: 100%; height: auto;' %>
+  <% end %>
+<% else %>
+  <p>No files attached.</p>
+<% end %>
+<%= link_to 'Edit', edit_upload_path(@upload) %> |
+<%= link_to 'Back', uploads_path %> |
+<%= link_to 'Delete', upload_path(@upload), method: :delete, data: { confirm: 'Are you sure you want to delete this upload?' }, class: 'button' %>

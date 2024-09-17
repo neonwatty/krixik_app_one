@@ -1,0 +1,26 @@
+<%= render 'shared/nav' %>
+<div class="hero bg-base-200 p-12">
+  <div class="hero-content text-center">
+    <%= form_with(model: @upload, local: true) do |form| %>
+      <% if @upload.errors.any? %>
+        <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 p-4 rounded-lg">
+          <h2><%= pluralize(@upload.errors.count, "error") %> prohibited this upload from being saved:</h2>
+          <ul>
+            <% @upload.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="field mb-5">
+        <%= render "uploads/image_form", form: form %>
+      </div>
+      <div class="grid grid-cols-4 gap-4">
+        <%= form.submit 'Submit', class: "btn btn-primary" %>
+        <p></p>
+        <p></p>
+        <%= link_to 'Back', uploads_path, class: 'btn btn-secondary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

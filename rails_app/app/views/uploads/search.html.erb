@@ -1,0 +1,14 @@
+<%= render 'shared/nav' %>
+<div class="hero bg-base-200">
+  <div class="flex flex-col items-center justify-center">
+    <div class="gap-x-5 gap-y-10 p-10">
+      <%= form_with url: search_items_uploads_path, local: true, method: :post, data: {controller: "debounce", debounce_target: "form"} do |form| %>
+        <%= form.search_field :query, data: {action: "input->debounce#search"}, placeholder: 'search file names', class: "search-input-field", id: "search-box" %>
+        <%= form.hidden_field :source, value: 'form' %>
+      <% end %>
+    </div>
+    <div id="search_results" class="flex-col gap-x-5 gap-y-10 p-10"">
+      <%= render "uploads/no_search" %>
+    </div>
+  </div>
+</div>

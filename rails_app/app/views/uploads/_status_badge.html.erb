@@ -1,0 +1,19 @@
+<% status_class = status_message_value(upload.id) %>
+<% case status_class %>
+<% when 0 %>
+  <div class="badge badge-success">
+    processing complete
+  </div>
+<% when 1 %>
+  <div class="badge badge-error">
+    processing failed
+  </div>
+<% when 2 %>
+  <div class="badge badge-warning">
+    processing
+  </div>
+<% else %>
+  <div class="badge badge-secondary">
+    unknown
+  </div>
+<% end %>

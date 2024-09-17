@@ -1,0 +1,13 @@
+one:
+  upload: one
+  receiver_start: pending
+  receiver_preprocess: pending
+  receiver_process: pending
+  receiver_end: pending
+
+two:
+  upload: two
+  receiver_start: complete
+  receiver_preprocess: complete
+  receiver_process: complete
+  receiver_end: complete
