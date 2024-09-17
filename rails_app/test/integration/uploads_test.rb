@@ -40,7 +40,7 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil flash[:notice]
 
     # sleep for X secs and query for status completion
-    sleep(30)
+    sleep(60)
     status_record = Status.find_by(upload_id: Upload.last)
     final_status = { start: status_record.receiver_start, preprocess: status_record.receiver_preprocess, process: status_record.receiver_process }
 

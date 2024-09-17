@@ -1,11 +1,11 @@
 one:
   user: one
-  filename: "test_file_1.mp4"
+  filename: "upload_one.mp4"
   files_attached: true
   process_complete: false
 
 two:
   user: one
-  filename: "test_file_2.mp4"
+  filename: "upload_two.mp4"
   files_attached: true
   process_complete: true
