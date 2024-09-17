@@ -39,7 +39,7 @@
               <figure>
                 <% output_file = @upload.files.second %>
                 <% begin %>
-                  <% json_content = file.download %>
+                  <% json_content = output_file.download %>
                   <% parsed_json = JSON.parse(json_content) %>
                   <textarea id="jsonTextarea" rows="20" cols="50" readonly style="width: 100%; max-width: 100%; height: auto; white-space: pre-wrap; display: block;"><%= JSON.pretty_generate(parsed_json).gsub(/\t/, '') %></textarea>
                   <% rescue JSON::ParserError %>
