@@ -11,25 +11,20 @@
               <source src="<%= rails_blob_path(input_file, disposition: "inline") %>" type="<%= input_file.content_type %>">
               Your browser does not support the video tag.
             </video>
+            <!-- print out number of files -->
+            <span class="text-sm text-gray-500"><%= upload.files.count %> files attached</span>
             <% if upload.files.count > 1 %>
               <% output_file = upload.files.second %>
-              <% if output_file.content_type.start_with?('application/json') %>
-                <div class="avatar">
-                  <% begin %>
-                    <% json_content = file.download %>
-                    <% parsed_json = JSON.parse(json_content) %>
-                    <% transcript = parsed_json['transcript']&.gsub(/\t/, '').strip  || 'No transcript key found' %>
-                    <textarea rows="3" cols="10" readonly style="width: 100%; max-width: 600px; height: auto; text-align: left;"> <%= transcript %> </textarea>
-                    <%= link_to 'Download', rails_blob_path(file, disposition: "attachment"), class: 'text-blue-500 hover:text-blue-600' %>
-                    <% rescue JSON::ParserError %>
-                    <p>Invalid JSON file.</p>
-                  <% end %>
-                </div>
-              <% else %>
-                <span class="text-sm">No output file attached</span>
-              <% end %>
-            <% else %>
-              <span class="text-sm">No output file attached</span>
+              <div>
+                <% begin %>
+                  <% json_content = output_file.download %>
+                  <% parsed_json = JSON.parse(json_content) %>
+                  <% transcript = parsed_json['transcript']&.gsub(/\t/, '').strip  || 'No transcript key found' %>
+                  <textarea rows="3" cols="10" readonly style="width: 100%; max-width: 600px; height: auto; text-align: left;" class="text-black"> <%= transcript %> </textarea>
+                  <% rescue JSON::ParserError %>
+                  <p>Invalid JSON file.</p>
+                <% end %>
+              </div>
             <% end %>
           </div>
           <!-- Filename Section -->

@@ -13,6 +13,7 @@
     <% if index > 0 %>
       <div class="w-full h-5"></div>
     <% end %>
+    <%= render "uploads/status_badge", upload: upload %>
     <%= render "uploads/index_card", upload: upload %>
   <% end %>
   <div class="pagy-nav flex my-5 mb-5 justify-center center-content">
