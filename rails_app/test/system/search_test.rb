@@ -23,8 +23,8 @@ class SearchTest < ApplicationSystemTestCase
     assert_selector "#no-search-results"
 
     # fill in search box with fixture-upload-specific search text, assert that proper results found div is present
-    fill_in "search-box", with: "upload_two.png"
-    assert_equal "upload_two.png", find("#search-box").value
+    fill_in "search-box", with: "test_file_1.mp4"
+    assert_equal "test_file_1.mp4", find("#search-box").value
     assert_selector "#search-results-returned"
   end
 
@@ -49,8 +49,8 @@ class SearchTest < ApplicationSystemTestCase
     assert_selector "#no-search-results"
 
     # fill in search box with fixture-upload-specific search text, assert that proper results found div is present
-    fill_in "search-box", with: "upload_two.png"
-    assert_equal "upload_two.png", find("#search-box").value
+    fill_in "search-box", with: "test_file_1.mp4"
+    assert_equal "test_file_1.mp4", find("#search-box").value
     assert_selector "#search-results-returned"
   end
 end

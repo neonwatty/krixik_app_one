@@ -38,7 +38,7 @@ class NewUploadTest < ApplicationSystemTestCase
     sleep 1
 
     # click on the file input
-    attach_file("upload[files]", Rails.root + "test/fixtures/files/r_l_burnside.png")
+    attach_file("upload[files]", Rails.root + "test/fixtures/files/test_file_3.mp4")
 
     # submit the form
     click_button "Submit"

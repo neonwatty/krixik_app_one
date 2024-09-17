@@ -17,13 +17,13 @@ class UploadTest < ActiveSupport::TestCase
 
   test "should associate upload with user" do
     upload = Upload.new(user: users(:one))
-    upload.files.attach(io: File.open(Rails.root.join("test/fixtures/files/mississippi_john_hurt.png")), filename: "mississippi_john_hurt.png")
+    upload.files.attach(io: File.open(Rails.root.join("test/fixtures/files/test_file_1.mp4")), filename: "test_file_1.mp4")
     assert_equal users(:one), upload.user, "Upload is not associated with the correct user"
   end
 
   test "should have attached files and filename" do
     upload = Upload.new(user: users(:one))
-    upload.files.attach(io: File.open(Rails.root.join("test/fixtures/files/mississippi_john_hurt.png")), filename: "mississippi_john_hurt.png")
+    upload.files.attach(io: File.open(Rails.root.join("test/fixtures/files/test_file_1.mp4")), filename: "test_file_1.mp4")
     assert upload.files.attached?, "Upload should have files attached"
   end
 end

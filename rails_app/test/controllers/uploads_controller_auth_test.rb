@@ -1,7 +1,6 @@
 require "test_helper"
 
 class UploadsControllerTest < ActionDispatch::IntegrationTest
-  self.use_transactional_tests = false
 
   def setup
     @valid_query_params = { query: "test query", source: "form" }

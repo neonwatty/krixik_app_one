@@ -30,7 +30,7 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
 
     # post to create upload
     assert_difference("Upload.count") do
-      post uploads_path, params: { upload: { files: fixture_file_upload("r_l_burnside.png", "image/png") } }
+      post uploads_path, params: { upload: { files: fixture_file_upload("test_file_3.mp4", "video/mp4") } }
       assert_redirected_to upload_path(Upload.last)
     end
 
