@@ -43,8 +43,6 @@ def deploy_receives(stage: str = "development"):
     if stage != "test-decoupled":
         from s3.cors_update import update as cors_update
 
-        print(f"aws_profile --> {os.environ["AWS_PROFILE"]}")
-
         bucket_to_update = f"{os.environ["APP_NAME_PRIVATE"]}-{stage}"
         print(f"bucket_to_update --> {bucket_to_update}")
 

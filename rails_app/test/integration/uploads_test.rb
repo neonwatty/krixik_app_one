@@ -30,7 +30,7 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
 
     # post to create upload
     assert_difference("Upload.count") do
-      post uploads_path, params: { upload: { files: fixture_file_upload("r_l_burnside.png", "image/png") } }
+      post uploads_path, params: { upload: { files: fixture_file_upload("test_file_3.mp4", "video/mp4") } }
       assert_redirected_to upload_path(Upload.last)
     end
 
@@ -40,7 +40,7 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil flash[:notice]
 
     # sleep for X secs and query for status completion
-    sleep(30)
+    sleep(60)
     status_record = Status.find_by(upload_id: Upload.last)
     final_status = { start: status_record.receiver_start, preprocess: status_record.receiver_preprocess, process: status_record.receiver_process }
 
