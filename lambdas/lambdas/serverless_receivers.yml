@@ -87,6 +87,8 @@ functions:
           batchSize: 1
     environment:
       RECEIVER_NAME: receiver_process
+      KRIXIK_API_URL: ${env:KRIXIK_API_URL}
+      KRIXIK_API_KEY: ${env:KRIXIK_API_KEY}
 
   receiver_end:
     name: ${env:APP_NAME_PRIVATE}-receiver_end-${opt:stage, 'test-decoupled'}
