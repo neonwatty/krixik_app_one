@@ -22,8 +22,7 @@ class AllUploadsTest < ApplicationSystemTestCase
     visit uploads_path
     assert_selector "#navbar"
     assert_selector "#all-uploads-results"
-    dynamic_id = "upload_result_#{@upload.id}"
-    within "##{dynamic_id}" do
+    within "upload_results" do
       click_on "Details"
     end
     assert_current_path new_user_session_path
@@ -38,8 +37,7 @@ class AllUploadsTest < ApplicationSystemTestCase
 
     # sign in user and examine details card
     sign_in(@user)
-    result_id = "upload_result_#{@upload.id}"
-    within "##{result_id}" do
+    within "upload_results" do
       click_on "Details"
     end
 
