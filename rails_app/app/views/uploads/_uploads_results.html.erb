@@ -1,5 +1,5 @@
 <% if @uploads.present? %>
-  <div class="flex flex-col items-center justify-center"  id="upload_result_<%= upload.id %>">
+  <div class="flex flex-col items-center justify-center">
     <button 
           onclick="window.location.reload();" 
           class="btn btn-primary btn-sm"
@@ -16,7 +16,7 @@
           <button data-action="click->file-sort#sortAscending" class="btn">&#9650;</button>
           <button data-action="click->file-sort#sortDescending" class="btn">&#9660;</button>
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" id="upload_results">
           <table class="table" data-file-sort-target="fileList">
             <thead>
               <tr>
