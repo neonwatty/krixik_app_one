@@ -1,5 +1,5 @@
 <% if @uploads.present? %>
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center"  id="upload_result_<%= upload.id %>">
     <button 
           onclick="window.location.reload();" 
           class="btn btn-primary btn-sm"
@@ -9,13 +9,93 @@
     </button>
     <div class="w-full h-5"></div>
   </div>
-  <% @uploads.each_with_index do |upload, index| %>
-    <% if index > 0 %>
-      <div class="w-full h-5"></div>
-    <% end %>
-    <%= render "uploads/status_badge", upload: upload %>
-    <%= render "uploads/index_card", upload: upload %>
-  <% end %>
+  <div class="bg-base-300 rounded-b-box rounded-se-box relative overflow-x-auto">
+    <div class="preview border-base-300 bg-base-100 rounded-b-box rounded-se-box flex min-h-[6rem] min-w-[18rem] max-w-4xl flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4 [border-width:var(--tab-border)]" style="">
+      <div data-controller="file-sort">
+        <div class="flex justify-center gap-3">
+          <button data-action="click->file-sort#sortAscending" class="btn">&#9650;</button>
+          <button data-action="click->file-sort#sortDescending" class="btn">&#9660;</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="table" data-file-sort-target="fileList">
+            <thead>
+              <tr>
+                <th><label><input type="checkbox" class="checkbox hidden" disabled></label></th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @uploads.each_with_index do |upload, index| %> <!-- Reverse order here -->
+                <% if upload.files.attached? %>
+                  <% input_file = upload.files.first %>
+                  <% if input_file.representable? %>
+                    <tr data-created-at="<%= input_file.created_at.iso8601 %>">
+                      <th>
+                        <input type="checkbox" 
+                   class="checkbox hidden" 
+                   id="checkbox-<%= index %>"
+                   disabled>
+                      </th>
+                      <td>
+                        <div class="flex items-center gap-3">
+                          <div class="avatar">
+                            <div class="w-12 h-12 mask mask-squircle">
+                              <a href="<%= rails_blob_path(input_file, disposition: "attachment") %>" 
+   class="venobox" 
+   data-title="input file (<%= input_file.filename.to_s %>)" 
+   data-gall="gal-<%= index %>" 
+   data-vbtype="video"> <!-- Change vbtype to iframe if linking to a video or image -->
+                                <%= image_tag input_file.preview(:thumb) %>
+                              </a>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="font-bold"><%= input_file.filename.to_s %></div>
+                            <div class="text-sm opacity-50"><%= input_file.created_at.to_s %></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <% if upload.files.attached? && upload.files.count > 1 %>
+                          <% output_file = upload.files.second %>
+                          <div>
+                            <% begin %>
+                              <% json_content = output_file.download %>
+                              <% parsed_json = JSON.parse(json_content) %>
+                              <% transcript = parsed_json['transcript']&.gsub(/\t/, '').strip  || 'No transcript key found' %>
+                              <textarea rows="3" cols="10" readonly style="width: 100%; max-width: 600px; height: auto; text-align: left;" class="text-black"> <%= transcript %> </textarea>
+                              <% rescue JSON::ParserError %>
+                              <p>Invalid JSON file.</p>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </td>
+                      <td> <%= render "uploads/status_badge", upload: upload %></td>
+                      <th>
+                        <%= link_to "Details", upload_path(upload), class: "btn btn-ghost btn-xs" %>
+                      </th>
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="pagy-nav flex my-5 mb-5 justify-center center-content">
     <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
   </div>
