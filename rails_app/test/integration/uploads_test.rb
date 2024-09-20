@@ -14,7 +14,7 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
   test "test 1: should access the home page" do
     get "/home"
     assert_response :success
-    expected_message = "Welcome to the rails template"
+    expected_message = "Welcome to the krixik demo app one"
     assert_select "h2", expected_message
   end
 

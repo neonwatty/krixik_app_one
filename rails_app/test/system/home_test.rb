@@ -11,7 +11,7 @@ class HomeTest < ApplicationSystemTestCase
     assert_link "Home", href: root_path
     assert_link "Search", href: search_path
     assert_link "All uploads", href: uploads_path
-    assert_link "New Upload", href: new_upload_path
+    assert_link "New upload", href: new_upload_path
     assert_link "Log in", href: new_user_session_path
     assert_link "Sign up", href: new_user_registration_path
     assert_no_selector "button", text: "Log out"
@@ -25,7 +25,7 @@ class HomeTest < ApplicationSystemTestCase
     assert_link "Home", href: root_path
     assert_link "Search", href: search_path
     assert_link "All uploads", href: uploads_path
-    assert_link "New Upload", href: new_upload_path
+    assert_link "New upload", href: new_upload_path
     assert_no_link "Log in", href: new_user_session_path
     assert_no_link "Sign up", href: new_user_registration_path
     assert_selector "button", text: "Log out"

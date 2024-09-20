@@ -13,6 +13,7 @@
     <link rel="apple-touch-icon" href="/new_icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/venobox/2.1.8/venobox.min.css" integrity="sha512-GypU0XXzM1fTasrwwQdNWacbV5aRsbJCjDdxfRyiYwDMvFkAI1LMny6mDbrM19kKGMCA+dQpilQgRZoPjhsGfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -22,5 +23,16 @@
       <%= render partial: "shared/notifications", locals: {key: key, message: message} %>
     <% end %>
     <%= yield %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/venobox/2.1.8/venobox.min.js" integrity="sha512-LvcjoBF1sjBfiAJpi1Vt5pJXcT7A+0BK6nvwYkp0PwL3zNswVsRi3GURZXlRN8o6E9p0pJUJi5vsp6LSqVBzhw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      new VenoBox({
+        overlayClose: true,
+        spinner: 'cube-grid',
+        closeBackground: 'transparent',
+        overlayColor: "rgba(82, 52, 235,0.8)",
+        share: true,
+        titleattr: 'data-title',
+      });
+    </script>
   </body>
 </html>
