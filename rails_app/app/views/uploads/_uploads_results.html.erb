@@ -17,14 +17,14 @@
           <button data-action="click->file-sort#sortDescending" class="btn">&#9660;</button>
         </div>
         <div class="overflow-x-auto" id="upload_results">
-          <table class="table" data-file-sort-target="fileList">
+          <table class="table w-full border-2 border-inherit" class="table" data-file-sort-target="fileList">
             <thead>
-              <tr>
+              <tr  class="border-b-2 border-inherit">
                 <th><label><input type="checkbox" class="checkbox hidden" disabled></label></th>
                 <th>Input</th>
-                <th>Output</th>
-                <th>Status</th>
-                <th></th>
+                <th class="border-l-2 border-inherit">Output</th>
+                <th class="border-l-2 border-inherit">Status</th>
+                <th class="border-l-2 border-inherit"></th>
               </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                 <% if upload.files.attached? %>
                   <% input_file = upload.files.first %>
                   <% if input_file.representable? %>
-                    <tr data-created-at="<%= input_file.created_at.iso8601 %>">
+                    <tr class="border-b-2 border-inherit" data-created-at="<%= input_file.created_at.iso8601 %>">
                       <th>
                         <input type="checkbox" 
                    class="checkbox hidden" 
@@ -58,7 +58,7 @@
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td class="border-l-2 border-inherit">
                         <% if upload.files.attached? && upload.files.count > 1 %>
                           <% output_file = upload.files.second %>
                           <div>
@@ -73,9 +73,9 @@
                           </div>
                         <% end %>
                       </td>
-                      <td> <%= render "uploads/status_badge", upload: upload %></td>
-                      <th>
-                        <%= link_to "Details", upload_path(upload), class: "btn btn-ghost btn-xs" %>
+                      <td class="border-l-2 border-inherit"> <%= render "uploads/status_badge", upload: upload %></td>
+                      <th class="border-l-2 border-inherit">
+                        <%= link_to "Details", upload_path(upload), class: "btn btn-primary btn-xs" %>
                       </th>
                     </tr>
                   <% end %>
@@ -83,12 +83,12 @@
               <% end %>
             </tbody>
             <tfoot>
-              <tr>
+              <tr class="border-b-2 border-inherit">
                 <th></th>
                 <th>Input</th>
-                <th>Output</th>
-                <th>Status</th>
-                <th></th>
+                <th class="border-l-2 border-inherit">Output</th>
+                <th class="border-l-2 border-inherit">Status</th>
+                <th class="border-l-2 border-inherit"></th>
               </tr>
             </tfoot>
           </table>
