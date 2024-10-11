@@ -1,19 +1,19 @@
 <% status_class = status_message_value(upload.id) %>
 <% case status_class %>
 <% when 0 %>
-  <div class="badge badge-success">
-    processing complete
+  <div class="text-center btn outline rounded-lg text-green-500 outline-green-500 px-2 mx-2">
+    complete
   </div>
 <% when 1 %>
-  <div class="badge badge-error">
-    processing failed
+  <div class="text-center btn outline rounded-lg text-red-500 outline-red-500 px-2 mx-2">
+    failed
   </div>
 <% when 2 %>
-  <div class="badge badge-warning">
+  <div class="text-center btn outline rounded-lg text-amber-500 outline-amber-500 px-2 mx-2">
     processing
   </div>
 <% else %>
-  <div class="badge badge-secondary">
+  <div class="text-center btn outline rounded-lg text-red-500 outline-red-500 px-2 mx-2">
     unknown
   </div>
 <% end %>

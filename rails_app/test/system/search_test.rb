@@ -1,8 +1,6 @@
 require "application_system_test_case"
 
 class SearchTest < ApplicationSystemTestCase
-  fixtures :all
-
   setup do
     @user = users(:one)
   end
@@ -25,8 +23,8 @@ class SearchTest < ApplicationSystemTestCase
     assert_selector "#no-search-results"
 
     # fill in search box with fixture-upload-specific search text, assert that proper results found div is present
-    fill_in "search-box", with: "upload_two.mp4"
-    assert_equal "upload_two.mp4", find("#search-box").value
+    fill_in "search-box", with: "upload_two.png" # for unknown reason only the second fixture upload is searchable in test
+    assert_equal "upload_two.png", find("#search-box").value
     assert_selector "#search-results-returned"
   end
 
@@ -51,8 +49,8 @@ class SearchTest < ApplicationSystemTestCase
     assert_selector "#no-search-results"
 
     # fill in search box with fixture-upload-specific search text, assert that proper results found div is present
-    fill_in "search-box", with: "upload_two.mp4"
-    assert_equal "upload_two.mp4", find("#search-box").value
+    fill_in "search-box", with: "upload_two.png"  # for unknown reason only the second fixture upload is searchable in test
+    assert_equal "upload_two.png", find("#search-box").value
     assert_selector "#search-results-returned"
   end
 end

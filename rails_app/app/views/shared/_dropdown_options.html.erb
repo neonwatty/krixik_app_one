@@ -1,0 +1,31 @@
+<div id="dropdown-options">
+  <ul class="bg-slate-200 dark:bg-slate-800 dark:text-white text-slate-900 z-[5] w-52 p-2 shadow">
+    <li>
+      <%= link_to 'Home', root_path, class: current_page?(root_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+    </li>
+    <li>
+      <%= link_to 'Search', search_path, class: current_page?(search_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+    </li>
+    <li>
+      <%= link_to 'All uploads', uploads_path, class: current_page?(uploads_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+    </li>
+    <li>
+      <%= link_to 'New upload', new_upload_path, class: current_page?(new_upload_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+    </li>
+    <% if user_signed_in? %>
+      <li>
+        <%= link_to 'Profile', edit_user_registration_path, class: current_page?(edit_user_registration_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+      </li>
+      <li>
+        <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to "Log in", new_user_session_path, class: current_page?(new_user_session_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+      </li>
+      <li>
+        <%= link_to "Sign up", new_user_registration_path, class: current_page?(new_user_registration_path) ? "link link-hover text-blue-600 bg-blue-100" : "link link-hover text-black dark:text-white" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
