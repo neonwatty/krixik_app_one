@@ -14,31 +14,37 @@
             <div class="w-full h-1/2 rounded-xl">
               <% if upload.files.attached? %>
                 <% input_file = upload.files.first %>
-                <div class="flex items-center gap-3">
-                  <div class="avatar">
-                    <div class="w-12 h-12 mask mask-squircle">
-                      <a href="<%= rails_blob_path(input_file, disposition: "attachment") %>" class="venobox" data-title="input file (<%= input_file.filename.to_s%>)" data-gall="gal-<%= index %>">
-                        <%= image_tag input_file.preview(:thumb) %>
-                      </a>
+                <% if input_file.representable? %>
+                  <div class="flex items-center gap-3">
+                    <div class="avatar">
+                      <div class="w-12 h-12 mask mask-squircle">
+                        <a href="<%= rails_blob_path(input_file, disposition: "attachment") %>" 
+                                      class="venobox" 
+                                      data-title="input file (<%= input_file.filename.to_s %>)" 
+                                      data-gall="gal-<%= index %>" 
+                                      data-vbtype="video">
+                          <%= image_tag input_file.preview(:thumb) %>
+                        </a>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="font-bold"><%= input_file.filename.to_s %></div>
+                      <div class="text-sm opacity-50"><%= input_file.created_at.to_s %></div>
                     </div>
                   </div>
-                  <div>
-                    <div class="font-bold"><%= input_file.filename.to_s %></div>
-                    <div class="text-sm opacity-50"><%= input_file.created_at.to_s %></div>
-                  </div>
-                </div>
-                <% if upload.files.attached? && upload.files.count > 1 %>
-                  <% output_file = upload.files.second %>
-                  <div>
-                    <% begin %>
-                      <% json_content = output_file.download %>
-                      <% parsed_json = JSON.parse(json_content) %>
-                      <% transcript = parsed_json['transcript']&.gsub(/\t/, '').strip  || 'No transcript key found' %>
-                      <textarea rows="3" cols="10" readonly style="width: 100%; max-width: 600px; height: auto; text-align: left;" class="text-black"> <%= transcript %> </textarea>
-                      <% rescue JSON::ParserError %>
-                      <p>Invalid JSON file.</p>
-                    <% end %>
-                  </div>
+                  <% if upload.files.attached? && upload.files.count > 1 %>
+                    <% output_file = upload.files.second %>
+                    <div>
+                      <% begin %>
+                        <% json_content = output_file.download %>
+                        <% parsed_json = JSON.parse(json_content) %>
+                        <% transcript = parsed_json['transcript']&.gsub(/\t/, '').strip  || 'No transcript key found' %>
+                        <textarea rows="3" cols="10" readonly style="width: 100%; max-width: 600px; height: auto; text-align: left;" class="text-black"> <%= transcript %> </textarea>
+                        <% rescue JSON::ParserError %>
+                        <p>Invalid JSON file.</p>
+                      <% end %>
+                    </div>
+                  <% end %>
                 <% end %>
               <% end %>
               <div>
@@ -75,7 +81,13 @@
                       <div class="flex items-center gap-3">
                         <div class="avatar mb-12">
                           <div class="w-12 h-12 mask mask-squircle">
-                            <%= image_tag input_file.preview(:thumb) %>
+                            <a href="<%= rails_blob_path(input_file, disposition: "attachment") %>" 
+                                      class="venobox" 
+                                      data-title="input file (<%= input_file.filename.to_s %>)" 
+                                      data-gall="gal-<%= index %>" 
+                                      data-vbtype="video">
+                              <%= image_tag input_file.preview(:thumb) %>
+                            </a>
                           </div>
                         </div>
                         <div>
