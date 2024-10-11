@@ -6,7 +6,7 @@ class UploadsController < ApplicationController
   before_action :check_request_from_form, only: [ :search_items ]
 
   def index
-    @uploads = Upload.all
+    @uploads = Upload.order(created_at: :desc)
     @pagy, @uploads = pagy(@uploads)
   end
 
@@ -42,6 +42,7 @@ class UploadsController < ApplicationController
     @uploads = Upload.search_by_name(@query)
     .where(process_complete: true)
     .limit(10) || []
+    @uploads = @uploads.sort_by(&:created_at).reverse
     respond_to do |format|
       format.turbo_stream do
           if @query.blank?

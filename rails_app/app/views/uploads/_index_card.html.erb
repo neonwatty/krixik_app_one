@@ -1,0 +1,40 @@
+<div class="bg-white dark:bg-slate-800 shadow-xl w-96 p-5"  id="upload_result_<%= upload.id %>">
+  <% if upload.files.attached? %>
+    <% input_file = upload.files.first %>
+    <% if input_file.content_type.start_with?('image/') %>
+      <div class="flex flex-col h-full"
+        <!-- Flex container for spacing elements -->
+        <div class="flex flex-1 flex-col justify-between">
+          <!-- Image Section -->
+          <div class="flex flex-col items-center mb-4 space-y-2">
+            <div class="avatar">
+              <div class="mask mask-squircle h-24 w-24">
+                <%= image_tag input_file.variant(:thumb) %>
+              </div>
+            </div>
+            <% if upload.files.count > 1 %>
+              <% output_file = upload.files.second %>
+              <% if output_file.content_type.start_with?('image/') %>
+                <div class="avatar">
+                  <div class="mask mask-squircle h-24 w-24">
+                    <%= image_tag rails_blob_path(output_file, disposition: "inline"), alt: 'Output File thumbnail' %>
+                  </div>
+                </div>
+              <% else %>
+                <span class="text-sm">No output file attached</span>
+              <% end %>
+            <% else %>
+              <span class="text-sm">No output file attached</span>
+            <% end %>
+          </div>
+          <!-- Filename Section -->
+          <h2 class="card-title text-lg font-semibold mb-4 text-center justify-center"><%= input_file.filename.to_s %></h2>
+          <!-- Details Button Section -->
+          <div class="text-center">
+            <%= link_to "Details", upload_path(upload), class: "btn btn-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

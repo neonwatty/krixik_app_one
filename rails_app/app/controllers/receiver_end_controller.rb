@@ -4,7 +4,7 @@ class ReceiverEndController < ApplicationController
 
   def update
     payload = params.require(:receiver_end).permit(:bucket_name, :processed_key, :upload_id)
-    upload = Upload.find_by(id: payload[:upload_id])
+    upload = Upload.find_by(id: payload[:upload_id])    
 
     if upload
       process_and_attach(
@@ -33,12 +33,19 @@ class ReceiverEndController < ApplicationController
   end
 
   def process_and_attach(processed_key:, bucket_name:, upload:)
+    # get processed image from S3
     s3 = Aws::S3::Client.new
     processed_data = s3.get_object(bucket: bucket_name, key: processed_key).body.read
+    
+    # formulate output file_name based on input file_name
+    filename = upload.files.first.filename.to_s
+    output_filename = filename.split('.').first + "_processed." + filename.split('.').last
 
-    upload.files.attach(io: StringIO.new(processed_data), filename: File.basename(processed_key))
+    # attach processed image to the upload
+    upload.files.attach(io: StringIO.new(processed_data), filename: output_filename)
     upload.save
 
+    # delete processed image from S3 (keep only in active storage connection)
     s3.delete_object(bucket: bucket_name, key: processed_key)
   rescue Aws::S3::Errors::ServiceError => e
       Rails.logger.error "S3 Error: #{e.message}"

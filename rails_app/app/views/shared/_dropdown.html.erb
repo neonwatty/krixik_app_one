@@ -1,0 +1,10 @@
+<div class="pt-4 pb-1">
+  <%= render 'shared/hamburger' %>
+  <div class="hidden" id="mobile-menu">
+    <%= render 'shared/dropdown_options' %>
+  </div>
+</div>
+<%= link_to 'krixikAppOne', root_path, class: "btn btn-ghost text-xl absolute top-4 right-16 text-slate-800 dark:text-slate-200 lg:hidden"%>
+<div class="absolute right-2 top-2 dark:text-white lg:hidden">
+  <%= render 'shared/dark_light' %>
+</div>

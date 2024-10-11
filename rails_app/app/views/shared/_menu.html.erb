@@ -1,0 +1,39 @@
+<div class="hidden lg:flex flex-row text-slate-800 dark:text-white">
+  <%= link_to 'krixikAppOne', root_path, class: "btn btn-ghost text-xl left-4 top-5 absolute text-slate-800 dark:text-white" %>
+  <ul class="flex flex-row space-x-10 items-center justify-start px-1 inset-x-44 w-3/4 absolute">
+    <li>
+      <%= link_to 'Home', root_path, class: current_page?(root_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+    </li>
+    <li>
+      <%= link_to 'Search', search_path, class: current_page?(search_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+    </li>
+    <li>
+      <%= link_to 'All uploads', uploads_path, class: current_page?(uploads_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+    </li>
+    <li>
+      <%= link_to 'New upload', new_upload_path, class: current_page?(new_upload_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+    </li>
+  </ul>
+</div>
+<div class="hidden lg:flex flex-row text-slate-800 dark:text-white">
+  <ul class="px-0.5 right-5 top-3 absolute flex flex-row">
+    <% if user_signed_in? %>
+      <li class="mx-4 mt-3">
+        <%= link_to 'Profile', edit_user_registration_path, class: current_page?(edit_user_registration_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+      </li>
+      <li class="mx-4 mt-3">
+        <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+      </li>
+    <% else %>
+      <li class="mx-3 mt-3">
+        <%= link_to "Log in", new_user_session_path, class: current_page?(new_user_session_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+      </li>
+      <li class="mx-4 mt-3 me-6">
+        <%= link_to "Sign up", new_user_registration_path, class: current_page?(new_user_registration_path) ? "link link-hover text-black bg-fuchsia-300 px-2 py-3 rounded-xl" : "link link-hover hover:text-black hover:bg-indigo-300 hover:px-2 hover:py-3 hover:rounded-xl" %>
+      </li>
+    <% end %>
+    <li class="mx-4">
+      <%= render 'shared/dark_light' %>
+    </li>
+  </ul>
+</div>

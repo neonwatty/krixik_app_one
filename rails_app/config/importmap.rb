@@ -10,3 +10,6 @@ pin "just-extend" # @5.1.1
 pin "@rails/activestorage", to: "@rails--activestorage.js" # @7.2.100
 pin "@stimulus-components/notification", to: "@stimulus-components--notification.js" # @3.0.0
 pin "stimulus-use" # @0.52.2
+pin "non_stimulus/hamburger_dropdown"
+pin "non_stimulus/venobox-init"
+pin "venobox" # @2.1.8

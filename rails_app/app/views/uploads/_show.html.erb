@@ -1,0 +1,56 @@
+<div class="w-1/2 bg-slate-300 dark:bg-slate-700 p-2 rounded-2xl text-black dark:text-white mx-auto">
+  <% if @upload.files.attached? %>
+    <div class="flex flex-row">
+      <% input_file = @upload.files.first %>
+      <% if input_file.representable? %>
+        <div class="p-5">
+          <div class="grid grid-flow-row justify-center">
+            <h4>Input</h4>
+            <video id="videoElement" controls style="width: 100%; height: auto;">
+              <source src="<%= url_for(input_file) %>" type="<%= input_file.content_type %>">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      <% else %>
+        <h4>Input</h4>
+        <div class="justify-end">
+          <p>No input file attached.</p>
+        </div>
+      <% end %>
+      <div class="p-5">
+        <% if @upload.files.attached? && @upload.files.count > 1 %>
+          <div class="grid grid-flow-row justify-center">
+            <h4">Output</h4>
+            <% output_file = @upload.files.second %>
+            <% begin %>
+              <% json_content = output_file.download %>
+              <% parsed_json = JSON.parse(json_content) %>
+              <textarea id="jsonTextarea" rows="12" cols="50" readonly style="width: 100%; max-width: 100%; height: auto; white-space: pre-wrap; display: block;" class="text-black"><%= JSON.pretty_generate(parsed_json).gsub(/\t/, '') %></textarea>
+              <% rescue JSON::ParserError %>
+              <p>Invalid JSON file.</p>
+            <% end %>
+          </div>
+        <% else %>
+          <h4>Output</h4>
+          <div class="justify-end">
+            <p>No output file attached.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex gap-4 mt-4 justify-center">
+      <%= link_to 'Back', uploads_path, class:  'bg-blue-500 text-white px-3 py-2 text-center rounded-xl hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500' %>
+      <% if @upload.user_id == current_user.id %>
+        <%= button_to "Delete", upload_path(@upload), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: 'bg-red-500 text-white px-3 py-2 text-center rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500' %>
+      <% end %>
+      <button 
+                  onclick="window.location.reload();" 
+                  class="btn btn-primary btn-sm bg-fuchsia-400 text-black p-3 rounded-xl"
+                  aria-label="Refresh"
+                >
+        <i class="fas fa-sync"></i>
+      </button>
+    </div>
+  <% end %>
+</div>
