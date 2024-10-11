@@ -22,14 +22,15 @@ class AllUploadsTest < ApplicationSystemTestCase
     visit uploads_path
     assert_selector "#navbar"
     assert_selector "#all-uploads-results"
-    within "upload_results" do
+    dynamic_id = "upload_result_#{@upload.id}"
+    within "##{dynamic_id}" do
       click_on "Details"
     end
     assert_current_path new_user_session_path
   end
 
 
-  test "test_4: check that details from upload not accessible if logged in" do
+  test "test_4: check that details from upload accessible if logged in" do
     # visit
     visit uploads_path
     assert_selector "#navbar"
@@ -37,7 +38,8 @@ class AllUploadsTest < ApplicationSystemTestCase
 
     # sign in user and examine details card
     sign_in(@user)
-    within "upload_results" do
+    result_id = "upload_result_#{@upload.id}"
+    within "##{result_id}" do
       click_on "Details"
     end
 

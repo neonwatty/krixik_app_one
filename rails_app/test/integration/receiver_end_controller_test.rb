@@ -7,7 +7,7 @@ class ReceiverEndControllerTest < ActionDispatch::IntegrationTest
     payload = {
       receiver_end: {
         bucket_name: "#{ENV['APP_NAME_PRIVATE']}-integration-test-data",
-        processed_key: "integration_test_image.mp4",
+        processed_key: "integration_test_image.png",
         upload_id: @upload.id
       }
     }
@@ -22,6 +22,6 @@ class ReceiverEndControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
 
     # Assert the response message
-    assert_equal JSON.parse(response.body)["status"], "processed file updated"
+    assert_equal JSON.parse(response.body)["status"], "processed image updated"
   end
 end
